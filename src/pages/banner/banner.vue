@@ -2,9 +2,9 @@
   <div>
     <el-button type="parimary" @click="willAdd">添加</el-button>
 
-    <v-list></v-list>
+    <v-list @edit="edit"></v-list>
 
-    <v-form :info="info"></v-form>
+    <v-form :info="info" ref="form"></v-form>
   </div>
 </template>
 <script>
@@ -30,6 +30,13 @@ export default {
         isshow: true,
         title: "添加轮播图",
       };
+    },
+    edit(id) {
+      this.info = {
+        title: "编辑轮播图",
+        isshow: true,
+      };
+      this.$refs.form.getOne(id);
     },
   },
   mounted() {},

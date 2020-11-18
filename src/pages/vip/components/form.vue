@@ -31,13 +31,13 @@ export default {
   data() {
     return {
       rules: {
-        iphone: [{ required: true, message: "请输入手机号", trigger: "blur" }],
+        phone: [{ required: true, message: "请输入手机号", trigger: "blur" }],
         nickname: [{ required: true, message: "请输入昵称", trigger: "blur" }],
       },
       // 数据
       user: {
-        phone: "",
         nickname: "",
+        phone: "",
         password: "",
         status: 1,
       },
@@ -47,27 +47,38 @@ export default {
     ...mapGetters({}),
   },
   methods: {
-    ...mapActions({}),
+    ...mapActions({
+      reqList:'vip/reqList'
+    }),
     cancel() {
       this.info.isshow = false;
     },
     //  获取详情
     getOne(id) {
       reqvipDetail(id).then((res) => {
-        console.log(res);
+        this.user = res.data.list;
+        this.user.id = id
+        this.user.password = '';
       });
     },
     empty() {
       this.user = {
-        phone: "",
         nickname: "",
+        phone: "",
         password: "",
         status: 1,
       };
     },
     // 修改
     update() {
-      reqvipUpdate();
+      reqvipUpdate(this.user).then(res=>{
+        if (res.data.code === 200) {
+          successAlert("修改成功");
+          this.empty();
+          this.cancel();
+          this.reqList()
+        }
+      });
     },
     // 是否保存form上次写的数据
     closed() {
@@ -76,7 +87,9 @@ export default {
       }
     },
   },
-  mounted() {},
+  mounted() {
+    this.reqList()
+  },
 };
 </script>
 <style scoped>

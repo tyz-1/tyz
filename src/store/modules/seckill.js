@@ -1,4 +1,4 @@
-import { reqbannerList } from "../../utils/http"
+import { reqseckList } from "../../utils/http"
 
 const state = {
     list: []
@@ -12,11 +12,11 @@ const mutations = {
 
 const actions = {
     reqList(context) {
-        reqbannerList().then(res => {
+        reqseckList().then(res => {
             console.log(res);
             context.commit('changeList', res.data.list)
         })
-    },
+    }
 }
 
 const getters = {

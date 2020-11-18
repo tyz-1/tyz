@@ -227,7 +227,6 @@ export default {
     },
     getAttrs() {
       let obj = this.specsList.find((item) => item.id === this.user.specsid);
-      console.log(this.user.specsid);
       this.attrsList = obj.attrs;
     },
     // 获取表格的信息并渲染

@@ -10,6 +10,7 @@ import specs from './modules/specs'
 import banner from './modules/banner'
 import goods from './modules/goods'
 import vip from './modules/vip'
+import seckill from './modules/seckill'
 export default new Vuex.Store({
     state,
     mutations,
@@ -20,6 +21,7 @@ export default new Vuex.Store({
         specs: specs,
         banner,
         goods,
-        vip
+        vip,
+        seckill
     }
 })

@@ -237,7 +237,7 @@ export const reqCateAdd = (cate) => {
     })
 }
 
-//列表 p={page:1,size:10}
+//列表
 export const reqCateList = (p) => {
     return axios({
         url: baseUrl + "/api/catelist",
@@ -364,7 +364,7 @@ export const reqgoodsAdd = (user) => {
     })
 }
 
-//18.列表 p={page:1,size:10}
+//18.列表 
 export const reqgoodsList = (p) => {
     return axios({
         url: baseUrl + "/api/goodslist",
@@ -419,6 +419,7 @@ export const reqgoodsCount = () => {
 
 // ===========商品管理接口 结束====================
 
+
 // ===========会员管理 开始====================
 
 // 请求会员列表
@@ -445,11 +446,13 @@ export const reqvipUpdate = (user) => {
     return axios({
         url: baseUrl + '/api/memberedit',
         method: 'post',
-        data: qs.stringify({ user: user })
+        data: qs.stringify(user)
     })
 }
 
 // ===========会员管理 结束====================
+
+
 // ===========轮播图 开始====================
 
 // 8.添加 文件
@@ -499,19 +502,70 @@ export const reqbannerDetail = id => {
 
 // 38.修改 文件
 export const reqbannerUpdate = (user) => {
-
+    let d = new FormData();
+    for (let i in user) {
+        d.append(i, user[i])
+    }
     return axios({
         url: baseUrl + "/api/banneredit",
+        method: "post",
+        data: d
+    })
+}
+
+
+// ===========轮播图 结束====================
+
+// ===========秒杀 开始====================
+
+// 8.添加
+export const reqseckAdd = (user) => {
+    return axios({
+        url: baseUrl + "/api/seckadd",
         method: "post",
         data: qs.stringify(user)
     })
 }
-export const reqbannerCount = () => {
 
+//18.列表 
+export const reqseckList = () => {
     return axios({
-        url: baseUrl + "/api/bannercount",
+        url: baseUrl + "/api/secklist",
         method: "get",
     })
 }
 
-// ===========轮播图 结束====================
+//26.删除
+export const reqseckDel = (id) => {
+    return axios({
+        url: baseUrl + "/api/seckdelete",
+        method: "post",
+        data: qs.stringify({
+            id: id
+        })
+    })
+}
+
+// 33.详情
+export const reqseckDetail = id => {
+    return axios({
+        url: baseUrl + "/api/seckinfo",
+        method: "get",
+        params: {
+            id: id
+        }
+    })
+}
+
+
+
+// 38.修改 要id
+export const reqseckUpdate = (user) => {
+    return axios({
+        url: baseUrl + "/api/seckedit",
+        method: "post",
+        data: qs.stringify(user)
+    })
+}
+
+// ===========秒杀 结束====================

@@ -10,7 +10,7 @@
     >
       {{list}}
       <el-table-column prop="id" label="用户编号" sortable></el-table-column>
-      <el-table-column prop="rolename" label="昵称" sortable></el-table-column>
+      <el-table-column prop="nickname" label="昵称" sortable></el-table-column>
       <el-table-column prop="phone" label="手机号" sortable></el-table-column>
 
       <el-table-column label="状态">
@@ -29,7 +29,7 @@
 </template>
 <script>
 import { mapGetters, mapActions } from "vuex";
-import { reqRoleDel, reqRoleUpdate } from "../../../utils/http";
+import {  } from "../../../utils/http";
 import { successAlert } from "../../../utils/alert";
 export default {
   computed: {

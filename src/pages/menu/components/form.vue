@@ -101,7 +101,6 @@ export default {
     },
     update() {
       reqMenuUpdate(this.form).then((res) => {
-        console.log(111);
         if (res.data.code === 200) {
           successAlert("修改成功");
           this.cancel();

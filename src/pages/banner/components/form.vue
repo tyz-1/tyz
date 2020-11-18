@@ -5,18 +5,7 @@
         <el-form-item label="标题" label-width="120px">
           <el-input v-model="user.title"></el-input>
         </el-form-item>
-        <el-form-item label="图片" label-width="120px" v-if="user.pid!==0">
-          <!-- 1.原生js上传图片 -->
-          <!-- 1.绘制html +css  -->
-          <!-- 如果添加成功，此时，input上的文件应该清掉，所以直接将input节点清除 -->
-          <!-- <div class="myupload">
-            <h3>+</h3>
-            <img class="img" v-if="imgUrl" :src="imgUrl" alt />
-
-            <input v-if="info.isshow" type="file" class="ipt" @change="changeFile" />
-          </div>-->
-
-          <!-- 2.element-ui 上传文件 -->
+        <el-form-item label="图片" label-width="120px">
           <el-upload
             class="avatar-uploader"
             action="#"
@@ -42,7 +31,7 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import { successAlert } from "../../../utils/alert";
-import { reqbannerAdd } from "../../../utils/http";
+import { reqbannerAdd, reqbannerDetail,reqbannerUpdate } from "../../../utils/http";
 export default {
   props: ["info"],
   data() {
@@ -56,12 +45,11 @@ export default {
     };
   },
   computed: {
-    ...mapGetters({
-    }),
+    ...mapGetters({}),
   },
   methods: {
     ...mapActions({
-      
+      reqList: "banner/reqList",
     }),
     empty() {
       this.user = {
@@ -69,7 +57,7 @@ export default {
         img: null,
         status: 1,
       };
-      this.imgUrl = '';
+      this.imgUrl = "";
     },
     closed() {
       if ((this.info.title = "编辑轮播图")) {
@@ -79,18 +67,35 @@ export default {
     cancel() {
       this.info.isshow = false;
     },
+    getOne(id) {
+      reqbannerDetail(id).then((res) => {
+        this.user = res.data.list;
+        this.imgUrl = this.$imgPre + this.user.img;
+        this.user.id = id;
+      });
+    },
     changeFile(e) {
       let file = e.raw;
       // 将一个文件生成一个URL地址
       this.imgUrl = URL.createObjectURL(file);
       this.user.img = file;
     },
-    update(){},
+    update() {
+      reqbannerUpdate(this.user).then((res) => {
+        if (res.data.code == 200) {
+          successAlert(res.data.msg);
+          this.cancel();
+          this.empty();
+          this.reqList();
+        }
+      });
+    },
     add() {
       reqbannerAdd(this.user).then((res) => {
         if (res.data.code === 200) {
           successAlert(res.data.msg);
-          this.cancel()
+          this.cancel();
+          this.reqList();
         }
       });
     },

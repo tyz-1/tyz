@@ -17,8 +17,9 @@ const mutations = {
     }
 }
 const actions = {
-    reqList(context) {
-        reqgoodsList({ page: context.state.page, size: context.state.size }).then(res => {
+    reqList(context, bool) {
+        let params = bool ? {} : { page: context.state.page, size: context.state.size }
+        reqgoodsList(params).then(res => {
             let list = res.data.list ? res.data.list : []
 
             if (list.length == 0 && context.state.page > 1) {
@@ -37,6 +38,7 @@ const actions = {
     },
     changePage(context, page) {
         context.commit('changePage', page)
+
         context.dispatch('reqList')
     }
 }
