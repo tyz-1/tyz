@@ -1,7 +1,7 @@
 <template>
   <div class="box">
     <el-dialog :title="info.title" :visible.sync="info.isshow" @closed="closed">
-      <el-form :model="user">
+      <el-form :model="user" :rules="rules">
         <el-form-item label="标题" label-width="120px">
           <el-input v-model="user.title"></el-input>
         </el-form-item>
@@ -31,7 +31,11 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import { successAlert } from "../../../utils/alert";
-import { reqbannerAdd, reqbannerDetail,reqbannerUpdate } from "../../../utils/http";
+import {
+  reqbannerAdd,
+  reqbannerDetail,
+  reqbannerUpdate,
+} from "../../../utils/http";
 export default {
   props: ["info"],
   data() {
@@ -42,6 +46,9 @@ export default {
         status: 1,
       },
       imgUrl: "",
+      rules: {
+        title: [{ required: true, message: "请输入标题", trigger: "blur" }],
+      },
     };
   },
   computed: {
@@ -51,6 +58,15 @@ export default {
     ...mapActions({
       reqList: "banner/reqList",
     }),
+    check() {
+      return new Promise((resolve, reject) => {
+        if (this.user.title === "") {
+          errorAlert("请选择一级分类");
+          return;
+        }
+        resolve();
+      });
+    },
     empty() {
       this.user = {
         title: "",
@@ -81,22 +97,26 @@ export default {
       this.user.img = file;
     },
     update() {
-      reqbannerUpdate(this.user).then((res) => {
-        if (res.data.code == 200) {
-          successAlert(res.data.msg);
-          this.cancel();
-          this.empty();
-          this.reqList();
-        }
+      this.check().then((res) => {
+        reqbannerUpdate(this.user).then((res) => {
+          if (res.data.code == 200) {
+            successAlert(res.data.msg);
+            this.cancel();
+            this.empty();
+            this.reqList();
+          }
+        });
       });
     },
     add() {
-      reqbannerAdd(this.user).then((res) => {
-        if (res.data.code === 200) {
-          successAlert(res.data.msg);
-          this.cancel();
-          this.reqList();
-        }
+      this.check().then((res) => {
+        reqbannerAdd(this.user).then((res) => {
+          if (res.data.code === 200) {
+            successAlert(res.data.msg);
+            this.cancel();
+            this.reqList();
+          }
+        });
       });
     },
   },

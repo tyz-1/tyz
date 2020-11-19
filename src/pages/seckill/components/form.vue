@@ -108,6 +108,7 @@ export default {
       reqList: "seckill/reqList",
       reqcatelist: "cate/reqList",
       reqgoodsList: "goods/reqList",
+      reqseckList:'seckill/reqList'
     }),
     check() {
       return new Promise((resolve, reject) => {
@@ -139,7 +140,9 @@ export default {
           new Date(Number(res.data.list.begintime)),
           new Date(Number(res.data.list.endtime)),
         ];
+        
         this.user = res.data.list;
+        this.user.id = id
         this.getSecondList();
         this.getThirdList();
       });
@@ -147,9 +150,15 @@ export default {
     // 修改信息
     update() {
       this.check().then(() => {
+        this.user.begintime = Number(this.user.begintime)
+        this.user.endtime = Number(this.user.endtime)
         reqseckUpdate(this.user).then((res) => {
-          this.getSecondList();
-          this.getThirdList();
+          if(res.data.code===200){
+            successAlert(res.data.msg)
+            this.reqseckList()
+            this.empty()
+            this.cancel()
+          }
         });
       });
     },

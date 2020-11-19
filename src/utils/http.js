@@ -23,8 +23,8 @@ axios.interceptors.response.use(req => {
 
 // 响应拦截
 axios.interceptors.response.use(res => {
-    console.log('======' + res.config.url);
-    console.log(res);
+    // console.log('======' + res.config.url);
+    // console.log(res);
     // 响应输出错误信息
     if (res.data.code !== 200) {
         errorAlert(res.data.msg)

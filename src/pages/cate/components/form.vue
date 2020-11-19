@@ -1,9 +1,9 @@
 <template>
   <div class="add">
     <el-dialog :title="info.title" :visible.sync="info.isshow" @closed="closed">
-      <el-form :model="user">
+      <el-form :model="user" >
         <el-form-item label="上级分类" label-width="120px">
-          <el-select v-model="user.pid" placeholder="请选择角色">
+          <el-select v-model="user.pid" placeholder="请选择分类名称">
             <el-option :value="0" label="顶级分类"></el-option>
             <el-option v-for="item in list" :key="item.id" :value="item.id" :label="item.catename"></el-option>
           </el-select>

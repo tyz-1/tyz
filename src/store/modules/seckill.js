@@ -13,7 +13,6 @@ const mutations = {
 const actions = {
     reqList(context) {
         reqseckList().then(res => {
-            console.log(res);
             context.commit('changeList', res.data.list)
         })
     }

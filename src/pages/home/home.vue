@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div id="main" style="width: 600px;height:400px;"></div>
+    <div id="main" style="width: 1000px;height:600px;"></div>
   </div>
 </template>
 <script src="echarts.min.js"></script>
