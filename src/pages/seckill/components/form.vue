@@ -116,6 +116,14 @@ export default {
           errorAlert("请输入活动名称");
           return;
         }
+        if (this.user.begintime === "") {
+          errorAlert("请输入开始时间");
+          return;
+        }
+        if (this.user.endtime === "") {
+          errorAlert("请输入终止时间");
+          return;
+        }
         resolve();
       });
     },

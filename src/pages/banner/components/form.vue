@@ -30,7 +30,7 @@
 </template>
 <script>
 import { mapGetters, mapActions } from "vuex";
-import { successAlert } from "../../../utils/alert";
+import { successAlert,errorAlert } from "../../../utils/alert";
 import {
   reqbannerAdd,
   reqbannerDetail,
@@ -62,6 +62,10 @@ export default {
       return new Promise((resolve, reject) => {
         if (this.user.title === "") {
           errorAlert("请选择一级分类");
+          return;
+        }
+        if(!this.user.img){
+          errorAlert('请选择图片')
           return;
         }
         resolve();

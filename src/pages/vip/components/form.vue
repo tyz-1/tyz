@@ -57,6 +57,10 @@ export default {
     getOne(id) {
       reqvipDetail(id).then((res) => {
         this.user = res.data.list;
+        console.log(res);
+        console.log(res.data.list);
+        console.log(this.user);
+        this.user.phone = Number(this.user.phone)
         this.user.id = id
         this.user.password = '';
       });

@@ -1,7 +1,7 @@
 <template>
   <div class="add">
     <el-dialog :title="info.title" :visible.sync="info.isshow" @closed="closed">
-      <el-form :model="user" >
+      <el-form :model="user" :rules="rules">
         <el-form-item label="上级分类" label-width="120px">
           <el-select v-model="user.pid" placeholder="请选择分类名称">
             <el-option :value="0" label="顶级分类"></el-option>
@@ -47,7 +47,7 @@
 </template>
 <script>
 import { mapGetters, mapActions } from "vuex";
-import { successAlert } from "../../../utils/alert";
+import { errorAlert, successAlert } from "../../../utils/alert";
 import {
   reqCateAdd,
   reqCateDetail,
@@ -67,6 +67,12 @@ export default {
       },
       // 图片路径
       imgUrl: "",
+      rules: {
+        pid: [{ required: true, message: "请输入上级菜单", trigger: "blur" }],
+        catename: [
+          { required: true, message: "请输入商品名称", trigger: "blur" },
+        ],
+      },
     };
   },
   computed: {
@@ -79,13 +85,15 @@ export default {
       reqList: "cate/reqList",
     }),
     add() {
-      reqCateAdd(this.user).then((res) => {
-        if (res.data.code === 200) {
-          successAlert("添加成功");
-          this.cancel();
-          this.empty();
-          this.reqList();
-        }
+      this.check().then((res) => {
+        reqCateAdd(this.user).then((res) => {
+          if (res.data.code === 200) {
+            successAlert("添加成功");
+            this.cancel();
+            this.empty();
+            this.reqList();
+          }
+        });
       });
     },
     // 获取表格的信息并渲染
@@ -98,13 +106,28 @@ export default {
     },
     // 修改信息
     update() {
-      reqCateUpdate(this.user).then((res) => {
-        if (res.data.code == 200) {
-          successAlert(res.data.msg);
-          this.cancel();
-          this.empty();
-          this.reqList();
+      this.check().then((res) => {
+        reqCateUpdate(this.user).then((res) => {
+          if (res.data.code == 200) {
+            successAlert(res.data.msg);
+            this.cancel();
+            this.empty();
+            this.reqList();
+          }
+        });
+      });
+    },
+    check() {
+      return new Promise((resolve, reject) => {
+        if (this.user.pid == "") {
+          errorAlert("请重新输入上级菜单");
+          return;
         }
+        if (this.user.catename == "") {
+          errorAlert("请重新输入商品名称");
+          return;
+        }
+        resolve();
       });
     },
     // 原生js的方法写上传文件和显示 changeFile
